@@ -73,27 +73,6 @@ export default function CartSidebar() {
       (i) => `${i.product_name} (${i.plan_name} × ${i.qty})`
     ).join(", ");
 
-    // Build WhatsApp message with referral info
-    const discountLine = referralValid
-      ? `\n🎟️ Referral Code: ${referralCode.trim().toUpperCase()}\n💰 Discount (${discountPercent}%): -${discountAmount.toFixed(2)} EGP`
-      : "";
-
-    const waMsg = `* Abdelrahim AI Lab *
-================
-*New Order*
-================
-*Products:*
-${items.map((i) => `${i.product_name} (${i.plan_name} × ${i.qty})`).join("\n")}${discountLine}
-================
-${referralValid ? `Subtotal: ${total.toFixed(2)} EGP\nDiscount (${discountPercent}%): -${discountAmount.toFixed(2)} EGP\n✅ Total After Discount: ${finalTotal.toFixed(2)} EGP` : `Total: ${total.toFixed(2)} EGP`}
-================
-Thank you for choosing Abdelrahim AI Lab!`;
-    const waUrl = `https://wa.me/201116745020?text=${encodeURIComponent(waMsg)}`;
-
-    // Open WhatsApp NOW (same click — popup allowed!)
-    window.open(waUrl, "_blank");
-
-    // Create order in background
     let orderCode = "N/A";
     try {
       const res = await fetch("/api/orders", {
@@ -133,6 +112,31 @@ Thank you for choosing Abdelrahim AI Lab!`;
     } catch {
       // continue
     }
+
+    // Build WhatsApp message with referral info
+    const discountLine = referralValid
+      ? `\n🎟️ Referral Code: ${referralCode.trim().toUpperCase()}\n💰 Discount (${discountPercent}%): -${discountAmount.toFixed(2)} EGP`
+      : "";
+
+    const waMsg = `* Abdelrahim AI Lab *
+==================
+New Order
+Order Code: ${orderCode !== "N/A" ? orderCode : ""}
+==================
+Products:
+${items.map((i) => `${i.product_name} (${i.plan_name} × ${i.qty})`).join("\n")}${discountLine}
+==================
+${referralValid ? `Subtotal: ${total.toFixed(2)} EGP\nDiscount (${discountPercent}%): -${discountAmount.toFixed(2)} EGP\n✅ Total After Discount: ${finalTotal.toFixed(2)} EGP` : `Total: ${total.toFixed(2)} EGP`}
+==================
+🔑 كود تفعيل التطبيق الخاص بك هو: ${orderCode}
+📱 لتفعيل تطبيق Ai Lab ومتابعة اشتراكك:
+قم بتحميل التطبيق واستخدم رقم واتسابك وكود التفعيل أعلاه للدخول.
+
+Thank you for choosing Abdelrahim AI Lab!`;
+    const waUrl = `https://wa.me/201116745020?text=${encodeURIComponent(waMsg)}`;
+
+    // Open WhatsApp
+    window.open(waUrl, "_blank");
 
     const params = new URLSearchParams({
       code: orderCode,

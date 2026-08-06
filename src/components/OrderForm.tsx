@@ -79,35 +79,6 @@ export default function OrderForm({ product }: { product: Product }) {
 
     setLoading(true);
 
-    // Build WhatsApp message with referral info
-    const discountLine = referralValid
-      ? `\n🎟️ Referral Code: ${referralCode.trim().toUpperCase()}\n💰 Discount (${discountPercent}%): -${discountAmount.toFixed(2)} EGP`
-      : "";
-    const totalLabel = referralValid ? "Total After Discount" : "Total";
-
-    const waMsg = `* Abdelrahim AI Lab *
-================
-*New Order*
-================
-*Products:*
-${product.name_ar}
-Plan: ${selectedPlan.name}
-Price: ${selectedPlan.price.toFixed(2)} EGP
-Qty: ${qty}
-================
-*Customer Info:*
-Name: ${customerName || "N/A"}
-Phone: ${customerPhone || "N/A"}${discountLine}
-================
-${referralValid ? `Subtotal: ${rawTotal.toFixed(2)} EGP\nDiscount (${discountPercent}%): -${discountAmount.toFixed(2)} EGP\n✅ ${totalLabel}: ${finalTotal.toFixed(2)} EGP` : `Total: ${rawTotal.toFixed(2)} EGP`}
-================
-Thank you for choosing Abdelrahim AI Lab!`;
-    const waUrl = `https://wa.me/201116745020?text=${encodeURIComponent(waMsg)}`;
-
-    // Open WhatsApp NOW (same click — popup allowed!)
-    window.open(waUrl, "_blank");
-
-    // Now create order in background
     let orderCode = "N/A";
     try {
       const res = await fetch("/api/orders", {
@@ -148,6 +119,39 @@ Thank you for choosing Abdelrahim AI Lab!`;
     } catch {
       // continue without order code
     }
+
+    // Build WhatsApp message with referral info
+    const discountLine = referralValid
+      ? `\n🎟️ Referral Code: ${referralCode.trim().toUpperCase()}\n💰 Discount (${discountPercent}%): -${discountAmount.toFixed(2)} EGP`
+      : "";
+    const totalLabel = referralValid ? "Total After Discount" : "Total";
+
+    const waMsg = `* Abdelrahim AI Lab *
+==================
+New Order
+Order Code: ${orderCode !== "N/A" ? orderCode : ""}
+==================
+Products:
+${product.name_ar}
+Plan: ${selectedPlan.name}
+Price: ${selectedPlan.price.toFixed(2)} EGP
+Qty: ${qty}
+==================
+Customer Info:
+Name: ${customerName || "N/A"}
+Phone: ${customerPhone || "N/A"}${discountLine}
+==================
+${referralValid ? `Subtotal: ${rawTotal.toFixed(2)} EGP\nDiscount (${discountPercent}%): -${discountAmount.toFixed(2)} EGP\n✅ ${totalLabel}: ${finalTotal.toFixed(2)} EGP` : `Total: ${rawTotal.toFixed(2)} EGP`}
+==================
+🔑 كود تفعيل التطبيق الخاص بك هو: ${orderCode}
+📱 لتفعيل تطبيق Ai Lab ومتابعة اشتراكك:
+قم بتحميل التطبيق واستخدم رقم واتسابك (${customerPhone || "المسجل"}) وكود التفعيل أعلاه للدخول.
+
+Thank you for choosing Abdelrahim AI Lab!`;
+    const waUrl = `https://wa.me/201116745020?text=${encodeURIComponent(waMsg)}`;
+
+    // Open WhatsApp
+    window.open(waUrl, "_blank");
 
     // Redirect to confirmation page
     const params = new URLSearchParams({

@@ -30,6 +30,9 @@ export default function Footer() {
             <Link href="/contact" className="text-text-secondary text-sm hover:text-text-primary no-underline">
               تواصل معانا
             </Link>
+            <Link href="/privacy" className="text-text-secondary text-sm hover:text-text-primary no-underline">
+              سياسة الخصوصية
+            </Link>
           </div>
           <div className="flex flex-col gap-2">
             <a

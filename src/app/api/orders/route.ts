@@ -43,8 +43,12 @@ export async function POST(request: Request) {
       },
     ];
 
-    // Generate order_code server-side as fallback
     const order_code = generateOrderCode();
+
+    const notesParts: string[] = [];
+    if (referral_code) notesParts.push(`Referral Code: ${referral_code}`);
+    if (discount_amount) notesParts.push(`Discount: ${discount_amount} EGP`);
+    const notes = notesParts.join(" | ");
 
     const { data, error } = await supabase
       .from("orders")
@@ -55,23 +59,37 @@ export async function POST(request: Request) {
         status: "pending",
         customer_name: customer_name || "",
         customer_phone: customer_phone || "",
-        ...(referral_code ? { referral_code } : {}),
-        ...(discount_amount ? { discount_amount } : {}),
+        notes,
       })
       .select("order_code")
       .single();
 
     if (error) {
       console.error("Order creation error:", error);
-      // Still return a code even if DB fails, so user can proceed
-      return NextResponse.json({ order_code, warning: error.message });
+      const { data: retryData, error: retryErr } = await supabase
+        .from("orders")
+        .insert({
+          order_code,
+          items,
+          total: final_total ?? total,
+          status: "pending",
+          customer_name: customer_name || "",
+          customer_phone: customer_phone || "",
+        })
+        .select("order_code")
+        .single();
+
+      if (retryErr) {
+        console.error("Order creation retry error:", retryErr);
+        return NextResponse.json({ error: retryErr.message }, { status: 500 });
+      }
+
+      return NextResponse.json({ order_code: retryData.order_code });
     }
 
     return NextResponse.json({ order_code: data.order_code });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Order API error:", err);
-    // Generate a fallback code so the flow never breaks
-    const fallback_code = generateOrderCode();
-    return NextResponse.json({ order_code: fallback_code, warning: "API error" });
+    return NextResponse.json({ error: err?.message || "API error" }, { status: 500 });
   }
 }

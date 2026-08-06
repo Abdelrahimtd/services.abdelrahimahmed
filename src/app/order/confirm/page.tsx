@@ -34,6 +34,10 @@ Phone: ${phone || "N/A"}${discountLine}
 ================
 ${totalSection}
 ================
+🔑 كود تفعيل التطبيق الخاص بك هو: ${code}
+📱 لتفعيل تطبيق Ai Lab ومتابعة اشتراكك:
+قم بتحميل التطبيق واستخدم رقم واتسابك (${phone || "المسجل"}) وكود التفعيل أعلاه للدخول.
+
 Thank you for choosing Abdelrahim AI Lab!`;
   return `https://api.whatsapp.com/send?phone=${WA_PHONE}&text=${encodeURIComponent(msg)}`;
 }
