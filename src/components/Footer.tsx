@@ -33,6 +33,9 @@ export default function Footer() {
             <Link href="/privacy" className="text-text-secondary text-sm hover:text-text-primary no-underline">
               سياسة الخصوصية
             </Link>
+            <Link href="/delete-account" className="text-text-secondary text-sm hover:text-text-primary no-underline">
+              حذف الحساب والبيانات
+            </Link>
           </div>
           <div className="flex flex-col gap-2">
             <a
