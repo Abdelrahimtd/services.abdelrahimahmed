@@ -3,6 +3,11 @@
 import { useCart } from "./CartProvider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  trackInitiateCheckout,
+  trackPlaceAnOrder,
+  trackPurchase,
+} from "@/lib/tiktok";
 
 export default function CartSidebar() {
   const { items, removeItem, total, count, isOpen, closeCart, clearCart } = useCart();
@@ -67,6 +72,30 @@ export default function CartSidebar() {
   async function checkout() {
     if (!items.length) return;
     setLoading(true);
+
+    const contents = items.map((i) => ({
+      content_id: i.product_id,
+      content_name: `${i.product_name} - ${i.plan_name}`,
+      content_type: "product",
+    }));
+
+    trackInitiateCheckout({
+      contents,
+      value: finalTotal,
+      currency: "EGP",
+    });
+
+    trackPlaceAnOrder({
+      contents,
+      value: finalTotal,
+      currency: "EGP",
+    });
+
+    trackPurchase({
+      contents,
+      value: finalTotal,
+      currency: "EGP",
+    });
 
     // Build items summary
     const itemsSummary = items.map(

@@ -42,6 +42,9 @@ Thank you for choosing Abdelrahim AI Lab!`;
   return `https://api.whatsapp.com/send?phone=${WA_PHONE}&text=${encodeURIComponent(msg)}`;
 }
 
+import { useEffect } from "react";
+import { tiktokIdentify, trackPurchase } from "@/lib/tiktok";
+
 function ConfirmContent() {
   const searchParams = useSearchParams();
   const code = searchParams.get("code") || "N/A";
@@ -62,6 +65,19 @@ function ConfirmContent() {
   const hasReferral = referralCode && discountPercent && discountAmount && subtotal;
 
   const waUrl = buildWaUrl(code, product, plan, price, qty, total, name, phone, referralCode, discountPercent, discountAmount, subtotal);
+
+  useEffect(() => {
+    if (phone) {
+      tiktokIdentify({ phone_number: phone });
+    }
+    trackPurchase({
+      id: code,
+      name: `${product} - ${plan}`,
+      type: "product",
+      value: parseFloat(total) || 0,
+      currency: "EGP",
+    });
+  }, [code, phone, product, plan, total]);
 
   function copyCode() {
     navigator.clipboard.writeText(code);

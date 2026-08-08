@@ -1,8 +1,34 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import type { Product } from "@/lib/supabase";
+import { trackAddToWishlist, trackClickButton } from "@/lib/tiktok";
 
 export default function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
+  const [wished, setWished] = useState(false);
   const price = product.plans[0]?.price ?? 0;
+
+  function handleWishlist() {
+    setWished(!wished);
+    trackAddToWishlist({
+      id: product.id,
+      name: product.name_ar,
+      type: "product",
+      value: price,
+      currency: "EGP",
+    });
+  }
+
+  function handleCtaClick(action: string) {
+    trackClickButton(action, {
+      id: product.id,
+      name: product.name_ar,
+      type: "product",
+      value: price,
+      currency: "EGP",
+    });
+  }
 
   return (
     <article
@@ -14,8 +40,14 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={product.icon_url} alt="" className="w-7 h-7 object-contain" />
         </div>
-        <button className="text-text-muted hover:text-gold text-xl bg-transparent border-none cursor-pointer transition-colors hover:scale-125">
-          ♡
+        <button
+          onClick={handleWishlist}
+          title="إضافة للمفضلة"
+          className={`text-xl bg-transparent border-none cursor-pointer transition-colors hover:scale-125 ${
+            wished ? "text-gold" : "text-text-muted hover:text-gold"
+          }`}
+        >
+          {wished ? "♥" : "♡"}
         </button>
       </div>
 
@@ -68,12 +100,14 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
       <div className="flex gap-2 mt-4">
         <Link
           href={`/products/${product.id}`}
+          onClick={() => handleCtaClick("ViewDetails")}
           className="flex-1 text-center px-4 py-2.5 rounded-full border border-border text-text-primary text-sm font-bold hover:border-teal hover:bg-teal-soft transition-all duration-300 no-underline hover-glow"
         >
           تفاصيل
         </Link>
         <Link
           href={`/products/${product.id}`}
+          onClick={() => handleCtaClick("SubscribeNow")}
           className="flex-1 text-center px-4 py-2.5 rounded-full bg-teal text-text-primary text-sm font-bold hover:bg-teal/80 transition-all duration-300 no-underline shadow-[0_4px_16px_var(--color-teal-glow)] btn-ripple animate-pulse-glow"
         >
           اشترك الآن ←

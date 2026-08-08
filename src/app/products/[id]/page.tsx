@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import OrderForm from "@/components/OrderForm";
+import ProductViewTracker from "@/components/ProductViewTracker";
 import type { Product } from "@/lib/supabase";
 
 export const revalidate = 60;
@@ -26,6 +27,7 @@ export default async function ProductDetailPage({
 
   return (
     <section className="py-8 sm:py-12">
+      <ProductViewTracker product={product} />
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <Link
           href="/products"

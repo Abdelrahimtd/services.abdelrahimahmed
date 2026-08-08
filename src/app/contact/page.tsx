@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { tiktokIdentify, trackClickButton } from "@/lib/tiktok";
 
 const WA_LINK = "https://wa.me/201116745020?text=";
 
@@ -9,11 +10,18 @@ export default function ContactPage() {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
 
-  function sendWhatsApp() {
+  async function sendWhatsApp() {
     if (!msg) {
       alert("اكتب رسالتك أولاً");
       return;
     }
+    if (email) {
+      await tiktokIdentify({ email });
+    }
+    trackClickButton("ContactWhatsApp", {
+      name: "ContactFormWhatsApp",
+      type: "button",
+    });
     const text = `Hello from Abdelrahim AI Lab\nName: ${name || "N/A"}\nEmail: ${email || "N/A"}\nMessage: ${msg}`;
     window.location.href = `${WA_LINK}${encodeURIComponent(text)}`;
   }

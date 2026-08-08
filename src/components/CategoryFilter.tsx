@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { trackSearch } from "@/lib/tiktok";
 
 const CATEGORIES = [
   { id: "all", label: "الكل" },
@@ -16,6 +17,7 @@ export default function CategoryFilter() {
   const active = searchParams.get("cat") ?? "all";
 
   function setCategory(cat: string) {
+    trackSearch(cat !== "all" ? cat : "all_products");
     const params = new URLSearchParams();
     if (cat !== "all") params.set("cat", cat);
     router.push(`/products?${params.toString()}`);

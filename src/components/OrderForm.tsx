@@ -4,6 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Product, Plan } from "@/lib/supabase";
 import { useCart } from "./CartProvider";
+import {
+  tiktokIdentify,
+  trackAddToCart,
+  trackInitiateCheckout,
+  trackPlaceAnOrder,
+  trackPurchase,
+} from "@/lib/tiktok";
 
 export default function OrderForm({ product }: { product: Product }) {
   const [selectedPlan, setSelectedPlan] = useState<Plan>(product.plans[0]);
@@ -74,10 +81,38 @@ export default function OrderForm({ product }: { product: Product }) {
   async function handleOrder() {
     if (!showForm) {
       setShowForm(true);
+      trackInitiateCheckout({
+        id: product.id,
+        name: product.name_ar,
+        type: "product",
+        value: finalTotal,
+        currency: "EGP",
+      });
       return;
     }
 
     setLoading(true);
+
+    // Identify customer with hashed phone/email before event tracking
+    if (customerPhone) {
+      await tiktokIdentify({ phone_number: customerPhone });
+    }
+
+    // Track PlaceAnOrder and Purchase
+    trackPlaceAnOrder({
+      id: product.id,
+      name: `${product.name_ar} - ${selectedPlan.name}`,
+      type: "product",
+      value: finalTotal,
+      currency: "EGP",
+    });
+    trackPurchase({
+      id: product.id,
+      name: `${product.name_ar} - ${selectedPlan.name}`,
+      type: "product",
+      value: finalTotal,
+      currency: "EGP",
+    });
 
     let orderCode = "N/A";
     try {
@@ -331,14 +366,23 @@ Thank you for choosing Abdelrahim AI Lab!`;
           {loading ? "جاري الإنشاء..." : showForm ? "💬 اطلب عبر واتساب" : "اطلب الآن"}
         </button>
         <button
-          onClick={() => addItem({
-            product_id: product.id,
-            product_name: product.name_ar,
-            icon_url: product.icon_url,
-            plan_name: selectedPlan.name,
-            price: selectedPlan.price,
-            qty,
-          })}
+          onClick={() => {
+            trackAddToCart({
+              id: product.id,
+              name: `${product.name_ar} - ${selectedPlan.name}`,
+              type: "product",
+              value: selectedPlan.price * qty,
+              currency: "EGP",
+            });
+            addItem({
+              product_id: product.id,
+              product_name: product.name_ar,
+              icon_url: product.icon_url,
+              plan_name: selectedPlan.name,
+              price: selectedPlan.price,
+              qty,
+            });
+          }}
           className="w-full py-3 rounded-full border border-border text-text-primary font-bold text-sm cursor-pointer hover:border-teal hover:bg-teal-soft transition-colors"
         >
           أضف للسلة 🛒
