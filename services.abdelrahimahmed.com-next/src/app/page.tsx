@@ -33,18 +33,25 @@ export default async function HomePage() {
           <p className="text-text-secondary text-base max-w-lg mx-auto mb-6">
             احصل على ChatGPT, Gemini, Claude, Canva — بأفضل الأسعار. استلام فوري وضمان كامل طوال مدة الاشتراك.
           </p>
-          <div className="flex justify-center gap-3 flex-wrap">
+          <div className="flex justify-center gap-3 flex-wrap items-center">
+            <Link
+              href="/app"
+              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal text-white text-sm font-extrabold hover:opacity-90 transition-all duration-300 no-underline shadow-[0_4px_20px_rgba(14,143,109,0.4)] flex items-center gap-2 transform hover:-translate-y-0.5"
+            >
+              <span>📱</span>
+              <span>حمّل التطبيق (Android APK)</span>
+            </Link>
+            <Link
+              href="/products"
+              className="px-5 py-2.5 rounded-full bg-teal/20 border border-teal/40 text-teal hover:bg-teal hover:text-white text-sm font-bold transition-all duration-300 no-underline"
+            >
+              تصفّح الاشتراكات ←
+            </Link>
             <Link
               href="/contact"
               className="px-5 py-2.5 rounded-full border border-border text-text-primary text-sm font-bold hover:border-teal hover:bg-teal-soft transition-colors no-underline"
             >
               تواصل معنا
-            </Link>
-            <Link
-              href="/products"
-              className="px-5 py-2.5 rounded-full bg-teal text-text-primary text-sm font-bold hover:bg-teal/80 transition-colors no-underline shadow-[0_4px_16px_var(--color-teal-glow)]"
-            >
-              تصفّح الاشتراكات ←
             </Link>
           </div>
 

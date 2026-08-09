@@ -11,6 +11,7 @@ export default function Header() {
   const navLinks = [
     { href: "/", label: "الرئيسية", key: "home" },
     { href: "/products", label: "المنتجات", key: "products" },
+    { href: "/app", label: "📱 التطبيق", key: "app" },
     { href: "/contact", label: "تواصل معانا", key: "contact" },
   ];
 
@@ -18,6 +19,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-bg/80 backdrop-blur-xl border-b border-border animate-fade-in-up">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-3 no-underline group">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src="/Ai-lab.png" 
             alt="Abdelrahim AI Lab Logo" 
