@@ -19,7 +19,7 @@ export default async function ProductsPage() {
 
   return (
     <section className="py-8 sm:py-12">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-6">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white">جميع المنتجات والاشتراكات</h1>
           <p className="text-text-secondary text-sm mt-1">اختر اشتراكك المفضل واستلم بياناتك فوراً</p>
@@ -27,7 +27,7 @@ export default async function ProductsPage() {
         <Suspense fallback={<div className="text-center py-4 text-text-muted text-sm">جاري تحميل الفئات...</div>}>
           <CategoryFilter />
         </Suspense>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="productsGrid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6" id="productsGrid">
           {products.map((p, idx) => (
             <ProductCard key={p.id} product={p} index={idx} />
           ))}

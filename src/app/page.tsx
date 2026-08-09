@@ -10,7 +10,7 @@ async function getFeaturedProducts(): Promise<Product[]> {
     .from("products")
     .select("*")
     .order("sort_order", { ascending: true })
-    .limit(8);
+    .limit(6);
   return (data as Product[]) ?? [];
 }
 
@@ -21,7 +21,7 @@ export default async function HomePage() {
     <>
       {/* Hero */}
       <section className="py-14 sm:py-20 text-center bg-[radial-gradient(ellipse_at_50%_20%,var(--color-teal-soft),transparent_60%)]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           <span className="inline-block font-[family-name:var(--font-mono)] text-xs text-teal bg-teal-soft px-4 py-1.5 rounded-full border border-teal/20 tracking-widest mb-5">
             ABDELRAHIM AI LAB
           </span>
@@ -33,18 +33,25 @@ export default async function HomePage() {
           <p className="text-text-secondary text-base max-w-lg mx-auto mb-6">
             احصل على ChatGPT, Gemini, Claude, Canva — بأفضل الأسعار. استلام فوري وضمان كامل طوال مدة الاشتراك.
           </p>
-          <div className="flex justify-center gap-3 flex-wrap">
+          <div className="flex justify-center gap-3 flex-wrap items-center">
+            <Link
+              href="/app"
+              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal text-white text-sm font-extrabold hover:opacity-90 transition-all duration-300 no-underline shadow-[0_4px_20px_rgba(14,143,109,0.4)] flex items-center gap-2 transform hover:-translate-y-0.5"
+            >
+              <span>📱</span>
+              <span>حمّل التطبيق (Android APK)</span>
+            </Link>
+            <Link
+              href="/products"
+              className="px-5 py-2.5 rounded-full bg-teal/20 border border-teal/40 text-teal hover:bg-teal hover:text-white text-sm font-bold transition-all duration-300 no-underline"
+            >
+              تصفّح الاشتراكات ←
+            </Link>
             <Link
               href="/contact"
               className="px-5 py-2.5 rounded-full border border-border text-text-primary text-sm font-bold hover:border-teal hover:bg-teal-soft transition-colors no-underline"
             >
               تواصل معنا
-            </Link>
-            <Link
-              href="/products"
-              className="px-5 py-2.5 rounded-full bg-teal text-text-primary text-sm font-bold hover:bg-teal/80 transition-colors no-underline shadow-[0_4px_16px_var(--color-teal-glow)]"
-            >
-              تصفّح الاشتراكات ←
             </Link>
           </div>
 
@@ -74,14 +81,14 @@ export default async function HomePage() {
 
       {/* Featured Products */}
       <section className="py-10 sm:py-14">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-extrabold mb-1 text-white">
               الاشتراكات المميزة
             </h2>
             <p className="text-text-secondary text-sm">⭐ الأكثر طلباً ومبيعاً</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {products.map((p, idx) => (
               <ProductCard key={p.id} product={p} index={idx} />
             ))}
