@@ -54,7 +54,7 @@ export default function AppDownloadPage() {
                 Abdelrahim AI Lab
               </h1>
               <p className="text-teal font-bold text-sm sm:text-base mb-1">
-                Abdelrahim CEO • Verified Developer
+                Hopenworks LTD • Verified Developer
               </p>
               <p className="text-text-muted text-xs flex items-center gap-2">
                 <span>تطبيق رسمي معتمد</span>
