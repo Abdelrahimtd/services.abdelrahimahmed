@@ -98,7 +98,8 @@ export default function AppDownloadPage() {
           </div>
 
           {/* ═══ Big Action Buttons ═══════════════════════════════════════ */}
-          <DownloadButtons />
+          <div className="space-y-3">
+            <DownloadButtons />
             <div className="flex items-center justify-between text-xs text-text-secondary px-2 pt-1 flex-wrap gap-2">
               <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
                 <span>🛡️</span>

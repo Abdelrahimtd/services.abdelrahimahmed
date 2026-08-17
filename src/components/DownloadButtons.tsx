@@ -10,7 +10,7 @@ export default function DownloadButtons() {
   };
 
   return (
-    <div className="space-y-3">
+    <>
       <a
         href="https://play.google.com/store/apps/details?id=com.aal.hopenworks"
         target="_blank"
@@ -34,6 +34,6 @@ export default function DownloadButtons() {
         </svg>
         <span>تثبيت / تحميل مباشر (APK v1.0.1)</span>
       </a>
-    </div>
+    </>
   );
 }
