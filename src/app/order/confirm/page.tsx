@@ -77,6 +77,17 @@ function ConfirmContent() {
       value: parseFloat(total) || 0,
       currency: "EGP",
     });
+
+    // Fire Meta Pixel Purchase Event
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("track", "Purchase", {
+        value: parseFloat(total) || 0,
+        currency: "EGP",
+        content_name: `${product} - ${plan}`,
+        content_ids: [code],
+        content_type: "product"
+      });
+    }
   }, [code, phone, product, plan, total]);
 
   function copyCode() {
