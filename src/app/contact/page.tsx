@@ -22,6 +22,9 @@ export default function ContactPage() {
       name: "ContactFormWhatsApp",
       type: "button",
     });
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("track", "Contact");
+    }
     const text = `Hello from Abdelrahim AI Lab\nName: ${name || "N/A"}\nEmail: ${email || "N/A"}\nMessage: ${msg}`;
     window.location.href = `${WA_LINK}${encodeURIComponent(text)}`;
   }

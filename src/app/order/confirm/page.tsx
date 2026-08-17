@@ -170,6 +170,7 @@ function ConfirmContent() {
           href={waUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => { if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'Lead'); }}
           className="block w-full py-5 rounded-2xl bg-[#25D366] text-white font-black text-xl cursor-pointer hover:bg-[#20BD5A] transition-colors shadow-[0_8px_30px_rgba(37,211,102,0.4)] mb-4 no-underline"
         >
           افتح واتساب وأرسل الطلب 💬
